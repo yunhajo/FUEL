@@ -7,6 +7,7 @@
 #include <ros/ros.h>
 #include <poly_traj/polynomial_traj.h>
 #include <active_perception/perception_utils.h>
+#include "std_msgs/Float32MultiArray.h"
 
 #include <plan_manage/backward.hpp>
 namespace backward {
@@ -17,7 +18,7 @@ using fast_planner::Polynomial;
 using fast_planner::PolynomialTraj;
 using fast_planner::PerceptionUtils;
 
-ros::Publisher cmd_vis_pub, pos_cmd_pub, traj_pub;
+ros::Publisher cmd_vis_pub, pos_cmd_pub, traj_pub, pos_vel_pub;
 nav_msgs::Odometry odom;
 quadrotor_msgs::PositionCommand cmd;
 
@@ -314,6 +315,10 @@ void cmdCallback(const ros::TimerEvent& e) {
   cmd.yaw_dot = yawdot;
   pos_cmd_pub.publish(cmd);
 
+  auto message = std_msgs::Float32MultiArray();
+  message.data = {pos(0), pos(1), pos(2), yaw, vel(0), vel(1), vel(2), yawdot};  
+  pos_vel_pub.publish(message);
+
   // Draw cmd
   // Eigen::Vector3d dir(cos(yaw), sin(yaw), 0.0);
   // drawCmd(pos, 2 * dir, 2, Eigen::Vector4d(1, 1, 0, 0.7));
@@ -428,6 +433,10 @@ void test() {
     cmd.acceleration.z = a(2);
     pos_cmd_pub.publish(cmd);
 
+  auto message = std_msgs::Float32MultiArray();
+  message.data = {p(0), p(1), p(2), v(0), v(1), v(2)};  
+  pos_vel_pub.publish(message);
+
     ros::Duration(0.02).sleep();
     tn = (ros::Time::now() - t1).toSec();
   }
@@ -447,6 +456,7 @@ int main(int argc, char** argv) {
   cmd_vis_pub = node.advertise<visualization_msgs::Marker>("planning/position_cmd_vis", 10);
   pos_cmd_pub = node.advertise<quadrotor_msgs::PositionCommand>("/position_cmd", 50);
   traj_pub = node.advertise<visualization_msgs::Marker>("planning/travel_traj", 10);
+  pos_vel_pub = node.advertise<std_msgs::Float32MultiArray>("/pos_vel_cmd", 50);
 
   ros::Timer cmd_timer = node.createTimer(ros::Duration(0.01), cmdCallback);
   ros::Timer vis_timer = node.createTimer(ros::Duration(0.25), visCallback);
