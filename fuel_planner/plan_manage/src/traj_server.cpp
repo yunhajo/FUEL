@@ -433,9 +433,9 @@ void test() {
     cmd.acceleration.z = a(2);
     pos_cmd_pub.publish(cmd);
 
-  auto message = std_msgs::Float32MultiArray();
-  message.data = {p(0), p(1), p(2), v(0), v(1), v(2)};  
-  pos_vel_pub.publish(message);
+    auto message = std_msgs::Float32MultiArray();
+    message.data = {p(0), p(1), p(2), v(0), v(1), v(2)};  
+    pos_vel_pub.publish(message);
 
     ros::Duration(0.02).sleep();
     tn = (ros::Time::now() - t1).toSec();
