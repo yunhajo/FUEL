@@ -12,6 +12,7 @@
 
   <arg name="odometry_topic"/>
   <arg name="sensor_pose_topic"/>
+  <arg name="original_pose_topic"/>
   <arg name="depth_topic"/>
   <arg name="cloud_topic"/>
 
@@ -27,6 +28,7 @@
   <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
     <remap from ="/odom_world" to="$(arg odometry_topic)"/>
     <remap from ="/map_ros/pose"   to = "$(arg sensor_pose_topic)"/> 
+    <remap from ="/map_ros/orig_pose"   to = "$(arg original_pose_topic)"/> 
     <remap from ="/map_ros/depth" to = "$(arg depth_topic)"/>
     <remap from ="/map_ros/cloud" to="$(arg cloud_topic)"/>
 
@@ -125,7 +127,7 @@
     <param name="heading_planner/half_vert_num" value="5" type="int"/>
     <param name="heading_planner/lambda1" value="2.0" type="double"/>
     <param name="heading_planner/lambda2" value="1.0" type="double"/>
-    <param name="heading_planner/max_yaw_rate" value="$(eval 10 * 3.1415926 / 180.0)" type="double"/>
+    <param name="heading_planner/max_yaw_rate" value="$(eval 2 * 3.1415926 / 180.0)" type="double"/>
     <param name="heading_planner/w" value="20000.0" type="double"/>
     <param name="heading_planner/weight_type" value="1" type="double"/>
 
@@ -133,7 +135,7 @@
     <!-- <param name="manager/max_vel" value="$(arg max_vel)" type="double"/> -->
     <param name="manager/max_vel" value="$(arg max_vel)" type="double"/>
     <param name="manager/max_acc" value="$(arg max_acc)" type="double"/>
-    <param name="manager/max_jerk" value="4" type="double"/>
+    <param name="manager/max_jerk" value="2" type="double"/>
     <param name="manager/dynamic_environment" value="0" type="int"/>
     <param name="manager/local_segment_length" value="6.0" type="double"/>
     <param name="manager/clearance_threshold" value="0.2" type="double"/>

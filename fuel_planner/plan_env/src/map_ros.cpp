@@ -73,6 +73,8 @@ void MapROS::init() {
       new message_filters::Subscriber<sensor_msgs::PointCloud2>(node_, "/map_ros/cloud", 50));
   pose_sub_.reset(
       new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/map_ros/pose", 25));
+  orig_pose_sub_.reset(
+      new message_filters::Subscriber<geometry_msgs::PoseStamped>(node_, "/map_ros/orig_pose", 25));
 
   sync_image_pose_.reset(new message_filters::Synchronizer<MapROS::SyncPolicyImagePose>(
       MapROS::SyncPolicyImagePose(100), *depth_sub_, *pose_sub_));

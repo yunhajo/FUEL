@@ -61,6 +61,7 @@ private:
   shared_ptr<message_filters::Subscriber<sensor_msgs::Image>> depth_sub_;
   shared_ptr<message_filters::Subscriber<sensor_msgs::PointCloud2>> cloud_sub_;
   shared_ptr<message_filters::Subscriber<geometry_msgs::PoseStamped>> pose_sub_;
+  shared_ptr<message_filters::Subscriber<geometry_msgs::PoseStamped>> orig_pose_sub_;
   SynchronizerImagePose sync_image_pose_;
   SynchronizerCloudPose sync_cloud_pose_;
 
