@@ -12,7 +12,6 @@
 
   <arg name="odometry_topic"/>
   <arg name="sensor_pose_topic"/>
-  <arg name="original_pose_topic"/>
   <arg name="depth_topic"/>
   <arg name="cloud_topic"/>
 
@@ -28,7 +27,6 @@
   <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
     <remap from ="/odom_world" to="$(arg odometry_topic)"/>
     <remap from ="/map_ros/pose"   to = "$(arg sensor_pose_topic)"/> 
-    <remap from ="/map_ros/orig_pose"   to = "$(arg original_pose_topic)"/> 
     <remap from ="/map_ros/depth" to = "$(arg depth_topic)"/>
     <remap from ="/map_ros/cloud" to="$(arg cloud_topic)"/>
 
@@ -64,10 +62,10 @@
     <param name="map_ros/cy" value="$(arg cy)"/>
     <param name="map_ros/fx" value="$(arg fx)"/>
     <param name="map_ros/fy" value="$(arg fy)"/>
-    <param name="map_ros/depth_filter_maxdist"   value="5.0"/>
+    <param name="map_ros/depth_filter_maxdist"   value="15.0"/>
     <param name="map_ros/depth_filter_mindist"   value="0.2"/>
     <param name="map_ros/depth_filter_margin"    value="2"/>
-    <param name="map_ros/k_depth_scaling_factor" value="1000.0"/>
+    <param name="map_ros/k_depth_scaling_factor" value="3431.15"/>
     <param name="map_ros/skip_pixel" value="2"/>
     <param name="map_ros/esdf_slice_height" value="0.3"/>
     <param name="map_ros/visualization_truncate_height"   value="10.09"/>
@@ -96,11 +94,11 @@
     <param name="exploration/top_view_num" value="15" type="int"/>
     <param name="exploration/vm" value="$(eval 1.0 * arg('max_vel'))" type="double"/>
     <param name="exploration/am" value="$(eval 1.0 * arg('max_acc'))" type="double"/>
-    <param name="exploration/yd" value="$(eval 60 * 3.1415926 / 180.0)" type="double"/>
-    <param name="exploration/ydd" value="$(eval 90 * 3.1415926 / 180.0)" type="double"/>
-    <param name="exploration/w_dir" value="1.5" type="double"/>
+    <param name="exploration/yd" value="$(eval 50 * 3.1415926 / 180.0)" type="double"/>
+    <param name="exploration/ydd" value="$(eval 55 * 3.1415926 / 180.0)" type="double"/>
+    <param name="exploration/w_dir" value="2.5" type="double"/>
     <param name="exploration/tsp_dir" value="$(find lkh_tsp_solver)/resource" type="string"/>
-    <param name="exploration/relax_time" value="1.0" type="double"/>
+    <param name="exploration/relax_time" value="2.0" type="double"/>
 
     <param name="frontier/cluster_min" value="100" type="int"/>
     <param name="frontier/cluster_size_xy" value="2.0" type="double"/>
