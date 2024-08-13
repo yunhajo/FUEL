@@ -16,10 +16,15 @@ void SDFMap::initMap(ros::NodeHandle& nh) {
 
   // Params of map properties
   double x_size, y_size, z_size;
+  double x_min, x_max, y_min, y_max;
   nh.param("sdf_map/resolution", mp_->resolution_, -1.0);
   nh.param("sdf_map/map_size_x", x_size, -1.0);
   nh.param("sdf_map/map_size_y", y_size, -1.0);
   nh.param("sdf_map/map_size_z", z_size, -1.0);
+  nh.param("sdf_map/map_min_x", x_min, -1.0);
+  nh.param("sdf_map/map_max_x", x_max, -1.0);
+  nh.param("sdf_map/map_min_y", y_min, -1.0);
+  nh.param("sdf_map/map_max_y", y_max, -1.0);
   nh.param("sdf_map/obstacles_inflation", mp_->obstacles_inflation_, -1.0);
   nh.param("sdf_map/local_bound_inflate", mp_->local_bound_inflate_, 1.0);
   nh.param("sdf_map/local_map_margin", mp_->local_map_margin_, 1);
@@ -32,11 +37,11 @@ void SDFMap::initMap(ros::NodeHandle& nh) {
   mp_->resolution_inv_ = 1 / mp_->resolution_;
   mp_->map_origin_ = Eigen::Vector3d(-x_size / 2.0, -y_size / 2.0, mp_->ground_height_);
   // mp_->map_origin_ = Eigen::Vector3d(0.0, 0.0, 0.0);
-  mp_->map_size_ = Eigen::Vector3d(x_size, y_size, z_size);
+  mp_->map_size_ = Eigen::Vector3d(x_max - x_min, y_max - y_min, z_size);
   for (int i = 0; i < 3; ++i)
     mp_->map_voxel_num_(i) = ceil(mp_->map_size_(i) / mp_->resolution_);
-  mp_->map_min_boundary_ = mp_->map_origin_;
-  mp_->map_max_boundary_ = mp_->map_origin_ + mp_->map_size_;
+  mp_->map_min_boundary_ = Eigen::Vector3d(x_min, y_min, mp_->ground_height_);
+  mp_->map_max_boundary_ = Eigen::Vector3d(x_max, y_max, mp_->ground_height_ + z_size);
 
   // Params of raycasting-based fusion
   nh.param("sdf_map/p_hit", mp_->p_hit_, 0.70);

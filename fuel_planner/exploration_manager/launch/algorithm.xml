@@ -3,6 +3,11 @@
   <arg name="map_size_y_"/>
   <arg name="map_size_z_"/>
 
+  <arg name="map_min_x_"/>
+  <arg name="map_min_y_"/>
+  <arg name="map_max_x_"/>
+  <arg name="map_max_y_"/>
+
   <arg name="box_min_x"/>
   <arg name="box_min_y"/>
   <arg name="box_min_z"/>
@@ -34,6 +39,11 @@
     <param name="sdf_map/map_size_x"   value="$(arg map_size_x_)" /> 
     <param name="sdf_map/map_size_y"   value="$(arg map_size_y_)" /> 
     <param name="sdf_map/map_size_z"   value="$(arg map_size_z_)" /> 
+
+    <param name="sdf_map/map_min_x"   value="$(arg map_min_x_)" /> 
+    <param name="sdf_map/map_min_y"   value="$(arg map_min_y_)" /> 
+    <param name="sdf_map/map_max_x"   value="$(arg map_max_x_)" /> 
+    <param name="sdf_map/map_max_y"   value="$(arg map_max_y_)" /> 
     <!-- <param name="sdf_map/obstacles_inflation"     value="0.099" />  -->
     <param name="sdf_map/obstacles_inflation"     value="0.199" /> 
     <param name="sdf_map/local_bound_inflate"    value="0.5"/>

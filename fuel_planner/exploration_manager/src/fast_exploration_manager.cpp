@@ -236,7 +236,9 @@ int FastExplorationManager::planExploreMotion(
     return FAIL;
   }
   ed_->path_next_goal_ = planner_manager_->path_finder_->getPath();
-  shortenPath(ed_->path_next_goal_);
+  if (ed_->path_next_goal_.size() > 2) {
+    shortenPath(ed_->path_next_goal_);
+  }
 
   const double radius_far = 5.0;
   const double radius_close = 1.5;
