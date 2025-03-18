@@ -1,6 +1,8 @@
 #include "plan_env/sdf_map.h"
 #include "plan_env/map_ros.h"
 #include <plan_env/raycast.h>
+#include "plan_env/SetBoundingBox.srv"
+#include "rclcpp/rclcpp.hpp"
 
 namespace fast_planner {
 SDFMap::SDFMap() {
@@ -35,7 +37,7 @@ void SDFMap::initMap(ros::NodeHandle& nh) {
 
   mp_->local_bound_inflate_ = max(mp_->resolution_, mp_->local_bound_inflate_);
   mp_->resolution_inv_ = 1 / mp_->resolution_;
-  mp_->map_origin_ = Eigen::Vector3d(-x_size / 2.0, -y_size / 2.0, mp_->ground_height_);
+  mp_->map_origin_ = Eigen::Vector3d(x_min, y_min, mp_->ground_height_);
   // mp_->map_origin_ = Eigen::Vector3d(0.0, 0.0, 0.0);
   mp_->map_size_ = Eigen::Vector3d(x_max - x_min, y_max - y_min, z_size);
   for (int i = 0; i < 3; ++i)
@@ -81,13 +83,13 @@ void SDFMap::initMap(ros::NodeHandle& nh) {
   md_->update_min_ = md_->update_max_ = Eigen::Vector3d(0, 0, 0);
 
   // Try retriving bounding box of map, set box to map size if not specified
-  vector<string> axis = { "x", "y", "z" };
-  for (int i = 0; i < 3; ++i) {
-    nh.param("sdf_map/box_min_" + axis[i], mp_->box_mind_[i], mp_->map_min_boundary_[i]);
-    nh.param("sdf_map/box_max_" + axis[i], mp_->box_maxd_[i], mp_->map_max_boundary_[i]);
-  }
-  posToIndex(mp_->box_mind_, mp_->box_min_);
-  posToIndex(mp_->box_maxd_, mp_->box_max_);
+  // vector<string> axis = { "x", "y", "z" };
+  // for (int i = 0; i < 3; ++i) {
+  //   nh.param("sdf_map/box_min_" + axis[i], mp_->box_mind_[i], mp_->map_min_boundary_[i]);
+  //   nh.param("sdf_map/box_max_" + axis[i], mp_->box_maxd_[i], mp_->map_max_boundary_[i]);
+  // }
+  // posToIndex(mp_->box_mind_, mp_->box_min_);
+  // posToIndex(mp_->box_maxd_, mp_->box_max_);
 
   // Initialize ROS wrapper
   mr_->setMap(this);
@@ -96,6 +98,24 @@ void SDFMap::initMap(ros::NodeHandle& nh) {
 
   caster_.reset(new RayCaster);
   caster_->setParams(mp_->resolution_, mp_->map_origin_);
+}
+
+bool setBoundingBoxCallback(plan_env::SetBoundingBox::Request &request, plan_env::SetBoundingBox::Response &response) {
+  // Update bounding box values from the received request
+  mp_->box_mind_[0] = request.x_min;
+  mp_->box_mind_[1] = request.y_min;
+  mp_->box_mind_[2] = request.z_min;
+
+  mp_->box_maxd_[0] = request.x_max;
+  mp_->box_maxd_[1] = request.y_max;
+  mp_->box_maxd_[2] = request.z_max;
+
+  posToIndex(mp_->box_mind_, mp_->box_min_);
+  posToIndex(mp_->box_maxd_, mp_->box_max_);
+
+  response.success = true;  // Send success response
+  ROS_INFO("Bounding box updated.");
+  return true;
 }
 
 void SDFMap::resetBuffer() {
