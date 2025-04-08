@@ -1,7 +1,7 @@
 #include "plan_env/sdf_map.h"
 #include "plan_env/map_ros.h"
 #include <plan_env/raycast.h>
-#include "plan_env/SetBoundingBox.h"
+#include "plan_env/SetBoundingBox.srv"
 #include "rclcpp/rclcpp.hpp"
 
 namespace fast_planner {
