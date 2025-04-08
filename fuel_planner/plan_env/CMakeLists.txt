@@ -25,7 +25,7 @@ find_package(PCL 1.7 REQUIRED)
 ## Add service files
 add_service_files(
     FILES
-    SetBoundingBox.srv
+    box.srv
 )
 
 ## Generate added messages and services
