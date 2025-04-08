@@ -9,22 +9,36 @@ find_package(OpenCV REQUIRED)
 
 
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  visualization_msgs
-  cv_bridge
-  message_filters
+    roscpp
+    rospy
+    std_msgs
+    visualization_msgs
+    cv_bridge
+    std_srvs
+    message_filters
+    message_generation  # Added message_generation for service generation
 )
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.7 REQUIRED)
 
+## Add service files
+add_service_files(
+    FILES
+    SetBoundingBox.srv
+)
+
+## Generate added messages and services
+generate_messages(
+    DEPENDENCIES
+    std_msgs
+)
+
 catkin_package(
- INCLUDE_DIRS include
- LIBRARIES plan_env
- CATKIN_DEPENDS roscpp std_msgs
-#  DEPENDS system_lib
+    INCLUDE_DIRS include
+    LIBRARIES plan_env
+    CATKIN_DEPENDS roscpp std_msgs
+    #  DEPENDS system_lib
 )
 
 include_directories( 
