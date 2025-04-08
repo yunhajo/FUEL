@@ -2,7 +2,7 @@
 #include "plan_env/map_ros.h"
 #include <plan_env/raycast.h>
 #include "plan_env/SetBoundingBox.h"
-#include "rclcpp/rclcpp.hpp"
+#include "ros/ros.h"
 
 namespace fast_planner {
 SDFMap::SDFMap() {
