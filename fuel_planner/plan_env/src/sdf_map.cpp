@@ -1,8 +1,8 @@
 #include "plan_env/sdf_map.h"
 #include "plan_env/map_ros.h"
 #include <plan_env/raycast.h>
-#include "plan_env/box.h"
 #include "ros/ros.h"
+#include "plan_env/box.h"
 
 namespace fast_planner {
 SDFMap::SDFMap() {
