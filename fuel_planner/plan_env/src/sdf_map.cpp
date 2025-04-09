@@ -2,7 +2,7 @@
 #include "plan_env/map_ros.h"
 #include <plan_env/raycast.h>
 #include "ros/ros.h"
-// #include <plan_env/box.h>
+// #include <plan_env/SetBoundingBox.h>
 
 namespace fast_planner {
   SDFMap::SDFMap() {
@@ -100,23 +100,23 @@ namespace fast_planner {
     caster_->setParams(mp_->resolution_, mp_->map_origin_);
   }
   
-  bool setBoundingBoxCallback(SetBoundingBox::Request &request, SetBoundingBox::Response &response) {
-    // Update bounding box values from the received request
-    mp_->box_mind_[0] = request.x_min;
-    mp_->box_mind_[1] = request.y_min;
-    mp_->box_mind_[2] = request.z_min;
+  // bool setBoundingBoxCallback(SetBoundingBox::Request &request, SetBoundingBox::Response &response) {
+  //   // Update bounding box values from the received request
+  //   mp_->box_mind_[0] = request.x_min;
+  //   mp_->box_mind_[1] = request.y_min;
+  //   mp_->box_mind_[2] = request.z_min;
   
-    mp_->box_maxd_[0] = request.x_max;
-    mp_->box_maxd_[1] = request.y_max;
-    mp_->box_maxd_[2] = request.z_max;
+  //   mp_->box_maxd_[0] = request.x_max;
+  //   mp_->box_maxd_[1] = request.y_max;
+  //   mp_->box_maxd_[2] = request.z_max;
   
-    posToIndex(mp_->box_mind_, mp_->box_min_);
-    posToIndex(mp_->box_maxd_, mp_->box_max_);
+  //   posToIndex(mp_->box_mind_, mp_->box_min_);
+  //   posToIndex(mp_->box_maxd_, mp_->box_max_);
   
-    response.success = true;  // Send success response
-    ROS_INFO("Bounding box updated.");
-    return true;
-  }
+  //   response.success = true;  // Send success response
+  //   ROS_INFO("Bounding box updated.");
+  //   return true;
+  // }
   
   void SDFMap::resetBuffer() {
     resetBuffer(mp_->map_min_boundary_, mp_->map_max_boundary_);
