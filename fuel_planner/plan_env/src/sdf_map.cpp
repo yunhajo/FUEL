@@ -100,7 +100,7 @@ namespace fast_planner {
     caster_->setParams(mp_->resolution_, mp_->map_origin_);
   }
   
-  bool setBoundingBoxCallback(plan_env::SetBoundingBox::Request &request, plan_env::SetBoundingBox::Response &response) {
+  bool setBoundingBoxCallback(SetBoundingBox::Request &request, SetBoundingBox::Response &response) {
     // Update bounding box values from the received request
     mp_->box_mind_[0] = request.x_min;
     mp_->box_mind_[1] = request.y_min;
