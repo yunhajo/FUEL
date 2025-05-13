@@ -83,13 +83,14 @@ namespace fast_planner {
     md_->update_min_ = md_->update_max_ = Eigen::Vector3d(0, 0, 0);
   
     // Try retriving bounding box of map, set box to map size if not specified
-    // vector<string> axis = { "x", "y", "z" };
-    // for (int i = 0; i < 3; ++i) {
-    //   nh.param("sdf_map/box_min_" + axis[i], mp_->box_mind_[i], mp_->map_min_boundary_[i]);
-    //   nh.param("sdf_map/box_max_" + axis[i], mp_->box_maxd_[i], mp_->map_max_boundary_[i]);
-    // }
-    // posToIndex(mp_->box_mind_, mp_->box_min_);
-    // posToIndex(mp_->box_maxd_, mp_->box_max_);
+    vector<string> axis = { "x", "y", "z" };
+    for (int i = 0; i < 3; ++i) {
+      nh.param("sdf_map/box_min_" + axis[i], mp_->box_mind_[i], mp_->map_min_boundary_[i]);
+      nh.param("sdf_map/box_max_" + axis[i], mp_->box_maxd_[i], mp_->map_max_boundary_[i]);
+    }
+    posToIndex(mp_->box_mind_, mp_->box_min_);
+    posToIndex(mp_->box_maxd_, mp_->box_max_);
+    cout << "Set min max box boundaries in sdf_map" << endl;
   
     // Initialize ROS wrapper
     mr_->setMap(this);

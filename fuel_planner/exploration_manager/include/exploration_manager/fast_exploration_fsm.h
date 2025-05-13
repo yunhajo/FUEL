@@ -8,6 +8,7 @@
 #include <std_msgs/Empty.h>
 #include <nav_msgs/Odometry.h>
 #include <visualization_msgs/Marker.h>
+#include <geometry_msgs/PoseArray.h>
 
 #include <algorithm>
 #include <iostream>
@@ -47,7 +48,7 @@ private:
   /* ROS utils */
   ros::NodeHandle node_;
   ros::Timer exec_timer_, safety_timer_, vis_timer_, frontier_timer_;
-  ros::Subscriber trigger_sub_, odom_sub_;
+  ros::Subscriber trigger_sub_, odom_sub_, bbox_sub_;
   ros::Publisher replan_pub_, new_pub_, bspline_pub_;
 
   /* helper functions */
@@ -60,6 +61,7 @@ private:
   void frontierCallback(const ros::TimerEvent& e);
   void triggerCallback(const nav_msgs::PathConstPtr& msg);
   void odometryCallback(const nav_msgs::OdometryConstPtr& msg);
+  void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle& nh);
   void visualize();
   void clearVisMarker();
 

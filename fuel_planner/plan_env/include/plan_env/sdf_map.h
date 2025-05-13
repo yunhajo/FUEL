@@ -39,7 +39,7 @@ public:
 
   void posToIndex(const Eigen::Vector3d& pos, Eigen::Vector3i& id);
   // bool setBoundingBoxCallback(plan_env::SetBoundingBox::Request &request, 
-  //                              plan_env::SetBoundingBox::Response &response)
+  //                              plan_env::SetBoundingBox::Response &response);
   void indexToPos(const Eigen::Vector3i& id, Eigen::Vector3d& pos);
   void boundIndex(Eigen::Vector3i& id);
   int toAddress(const Eigen::Vector3i& id);

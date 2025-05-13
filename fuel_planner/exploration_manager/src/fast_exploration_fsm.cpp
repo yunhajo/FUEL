@@ -45,6 +45,35 @@ void FastExplorationFSM::init(ros::NodeHandle& nh) {
   replan_pub_ = nh.advertise<std_msgs::Empty>("/planning/replan", 10);
   new_pub_ = nh.advertise<std_msgs::Empty>("/planning/new", 10);
   bspline_pub_ = nh.advertise<bspline::Bspline>("/planning/bspline", 10);
+  bbox_sub_ = nh.subscribe<geometry_msgs::PoseArray>("pose_array_topic", 10, 
+    boost::bind(poseArrayCallback, _1, boost::ref(nh)));
+}
+
+void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle& nh)
+{
+    // Check if the PoseArray has at least two poses
+    if (msg->poses.size() < 2) {
+        ROS_ERROR("PoseArray must contain at least two poses.");
+        return;
+    }
+
+    // Extract the first and second poses
+    const geometry_msgs::Pose& pose_min = msg->poses[0];
+    const geometry_msgs::Pose& pose_max = msg->poses[1];
+
+    // Set the parameters for the bounding box
+    nh.setParam("sdf_map/box_min_x", pose_min.position.x);
+    nh.setParam("sdf_map/box_min_y", pose_min.position.y);
+    nh.setParam("sdf_map/box_min_z", pose_min.position.z);
+    
+    nh.setParam("sdf_map/box_max_x", pose_max.position.x);
+    nh.setParam("sdf_map/box_max_y", pose_max.position.y);
+    nh.setParam("sdf_map/box_max_z", pose_max.position.z);
+
+    ROS_INFO("Parameters set in fast exploration: sdf_map/box_min_x = %f, sdf_map/box_min_y = %f, sdf_map/box_min_z = %f", 
+             pose_min.position.x, pose_min.position.y, pose_min.position.z);
+    ROS_INFO("Parameters set in fast exploration: sdf_map/box_max_x = %f, sdf_map/box_max_y = %f, sdf_map/box_max_z = %f", 
+             pose_max.position.x, pose_max.position.y, pose_max.position.z);
 }
 
 void FastExplorationFSM::FSMCallback(const ros::TimerEvent& e) {

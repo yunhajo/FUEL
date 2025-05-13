@@ -18,6 +18,7 @@
 #include <bspline/Bspline.h>
 #include <plan_manage/planner_manager.h>
 #include <traj_utils/planning_visualization.h>
+#include <geometry_msgs/PoseArray.h>
 
 using std::vector;
 
@@ -73,7 +74,7 @@ private:
   /* ROS utils */
   ros::NodeHandle node_;
   ros::Timer exec_timer_, safety_timer_, vis_timer_, test_something_timer_;
-  ros::Subscriber waypoint_sub_, odom_sub_;
+  ros::Subscriber waypoint_sub_, odom_sub_, bbox_sub_;
   ros::Publisher replan_pub_, new_pub_, bspline_pub_;
 
   /* helper functions */
@@ -88,6 +89,7 @@ private:
   void checkCollisionCallback(const ros::TimerEvent& e);
   void waypointCallback(const nav_msgs::PathConstPtr& msg);
   void odometryCallback(const nav_msgs::OdometryConstPtr& msg);
+  void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle& nh);
 
 public:
   KinoReplanFSM(/* args */) {
