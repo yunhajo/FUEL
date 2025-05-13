@@ -37,11 +37,11 @@ void KinoReplanFSM::init(ros::NodeHandle& nh) {
   new_pub_ = nh.advertise<std_msgs::Empty>("/planning/new", 10);
   bspline_pub_ = nh.advertise<bspline::Bspline>("/planning/bspline", 10);
 
-  bbox_sub_ = nh.subscribe<geometry_msgs::PoseArray>("pose_array_topic", 10, 
-    boost::bind(poseArrayCallback, _1, boost::ref(nh)));
+  bbox_sub_ = nh.subscribe<geometry_msgs::PoseArray>("pose_array_topic", 10, &KinoReplanFSM::bboxCallback, this);
+  node_ = nh;
 }
 
-void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle& nh)
+void KinoReplanFSM::bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
     // Check if the PoseArray has at least two poses
     if (msg->poses.size() < 2) {
@@ -54,13 +54,13 @@ void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle
     const geometry_msgs::Pose& pose_max = msg->poses[1];
 
     // Set the parameters for the bounding box
-    nh.setParam("sdf_map/box_min_x", pose_min.position.x);
-    nh.setParam("sdf_map/box_min_y", pose_min.position.y);
-    nh.setParam("sdf_map/box_min_z", pose_min.position.z);
+    node_.setParam("sdf_map/box_min_x", pose_min.position.x);
+    node_.setParam("sdf_map/box_min_y", pose_min.position.y);
+    node_.setParam("sdf_map/box_min_z", pose_min.position.z);
     
-    nh.setParam("sdf_map/box_max_x", pose_max.position.x);
-    nh.setParam("sdf_map/box_max_y", pose_max.position.y);
-    nh.setParam("sdf_map/box_max_z", pose_max.position.z);
+    node_.setParam("sdf_map/box_max_x", pose_max.position.x);
+    node_.setParam("sdf_map/box_max_y", pose_max.position.y);
+    node_.setParam("sdf_map/box_max_z", pose_max.position.z);
 
     ROS_INFO("Parameters set in kino replan: sdf_map/box_min_x = %f, sdf_map/box_min_y = %f, sdf_map/box_min_z = %f", 
              pose_min.position.x, pose_min.position.y, pose_min.position.z);

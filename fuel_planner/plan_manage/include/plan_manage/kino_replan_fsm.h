@@ -89,7 +89,7 @@ private:
   void checkCollisionCallback(const ros::TimerEvent& e);
   void waypointCallback(const nav_msgs::PathConstPtr& msg);
   void odometryCallback(const nav_msgs::OdometryConstPtr& msg);
-  void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg, ros::NodeHandle& nh);
+  void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg);
 
 public:
   KinoReplanFSM(/* args */) {
