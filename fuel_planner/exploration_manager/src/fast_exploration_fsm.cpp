@@ -49,7 +49,7 @@ void FastExplorationFSM::init(ros::NodeHandle& nh) {
   node_ = nh;
 }
 
-void bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg)
+void FastExplorationFSM::bboxCallback(const geometry_msgs::PoseArray::ConstPtr& msg)
 {
     // Check if the PoseArray has at least two poses
     if (msg->poses.size() < 2) {
